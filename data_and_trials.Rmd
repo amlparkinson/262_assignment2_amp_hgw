@@ -16,18 +16,9 @@ library(tidyverse)
 nsample = 500
 
 fish_species = c("tuna", "mahimahi", "shark", "salmon", 'flounder')
-fish_price = c(12, 4, 10, 8, 5)
-set_location = c("Naples", "Mohawk", "Isla Vista", "Carpinteria")
-
 
 catch_Naples = sample(fish_species, size = 100, prob = c(0.1, 0.4, 0.2, 0.15, 0.15), replace = T)
 catch_Mohawk = sample(fish_species, size = 100, prob = c(0.3, 0.2, 0.15, 0.2, 0.15), replace = T)
-
-
-fish = sample(fish_species, size = 100, replace = T)
-santa_barbara = sample(set_location$santa_barbara, size = 100)
-
-location = as.data.frame(location)
 
 mock_data = data.frame(Naples=catch_Naples, Mohawk=catch_Mohawk) 
 

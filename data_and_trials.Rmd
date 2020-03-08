@@ -37,6 +37,7 @@ catch_IV = sample(fish_species, size=100, prob = c(0.3, 0.17, 0.2, 0.23, 0.1), r
 catch = data.frame(catch_Naples, catch_Mohawk, catch_Carp, catch_IV)
 
 # Get the counts of each fish species for each location (instead of a list of 100)
+# Thanks Allie for getting this figured out!!
 revenue = data.frame(matrix(nrow=nrow(prices), ncol=ncol(catch)))
 for(i in 1:ncol(catch)) {
   revenue[i]=summary(catch[[i]])

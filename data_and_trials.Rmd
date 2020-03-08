@@ -10,23 +10,67 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-# packages
+# Hannah's code --------
+# upload packages
 library(tidyverse)
-# generate mock test data
-nsample = 500
 
+# generate vectors of fish species: tuna, mahimahi, shark, salmon, flounder. 
 fish_species = c("tuna", "mahimahi", "shark", "salmon", 'flounder')
 
+# generate vectors of catch locations: Naples, Mohawk, Carpinteria, Isla Vista.
+catch_locations = c("Naples", "Mohawk", "Carp", "IV")
+
+# generate vectors of fish prices
+fish_price = runif(min=7, max=15, n=length(fish_species))
+
+# Create a table of prices for fish
+prices = data.frame(fish = fish_species, price = fish_price) %>%
+  arrange(fish)
+
+# Create catch data for locations
 catch_Naples = sample(fish_species, size = 100, prob = c(0.1, 0.4, 0.2, 0.15, 0.15), replace = T)
 catch_Mohawk = sample(fish_species, size = 100, prob = c(0.3, 0.2, 0.15, 0.2, 0.15), replace = T)
+catch_Carp = sample(fish_species, size=100, prob = c(0.4, 0.12, 0.18, 0.1, 0.2), replace = T)
+catch_IV = sample(fish_species, size=100, prob = c(0.3, 0.17, 0.2, 0.23, 0.1), replace = T)
 
-mock_data = data.frame(Naples=catch_Naples, Mohawk=catch_Mohawk) 
+# create data-frame of fish caught at each location
+catch = data.frame(catch_Naples, catch_Mohawk, catch_Carp, catch_IV)
 
-for (i in 1:mock_data) {
-  Naples = as.factor(Naples)
-  Mohawk = as.factor(Mohawk)
+# Get the counts of each fish species for each location (instead of a list of 100)
+revenue = data.frame(matrix(nrow=nrow(prices), ncol=ncol(catch)))
+for(i in 1:ncol(catch)) {
+  revenue[i]=summary(catch[[i]])
 }
 
+# Add fish names to revenue dataframe
+fish_names = names(summary(catch[[1]]))
+revenue$fish_names=fish_names #need to remove fish column, it is duplicated... oops
+
+
+
+
+
+
+
+```
+
+
+
+```{r}
+# Test code from Anne-Marie and Hannah --------
+
+# generate mock test data
+# nsample = 500
+
+# catch_Naples = sample(fish_species, size = 100, prob = c(0.1, 0.4, 0.2, 0.15, 0.15), replace = T)
+# catch_Mohawk = sample(fish_species, size = 100, prob = c(0.3, 0.2, 0.15, 0.2, 0.15), replace = T)
+# 
+# mock_data = data.frame(Naples=catch_Naples, Mohawk=catch_Mohawk) 
+# 
+# for (i in 1:mock_data) {
+#   Naples = as.factor(Naples)
+#   Mohawk = as.factor(Mohawk)
+# }
 
 ```
 

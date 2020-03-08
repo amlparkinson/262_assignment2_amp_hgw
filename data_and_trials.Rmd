@@ -44,12 +44,15 @@ for(i in 1:ncol(catch)) {
 
 # Add fish names to revenue dataframe
 fish_names = names(summary(catch[[1]]))
-revenue$fish_names=fish_names #need to remove fish column, it is duplicated... oops
+revenue$fish_names=fish_names 
 
+# Did the below to remove the duplicated fish column in the revenue dataframe. Not sure if this is the best way..?
+keeps <- c("X1", "X2", "X3", "X4", "fish_names")
+revenue[keeps]
 
+view(revenue) # hmm.. doesn't look like it did. LOL
 
-
-
+# Need to figure out how to now add the total revenue to the revenue dataframe?
 
 
 ```
@@ -57,7 +60,7 @@ revenue$fish_names=fish_names #need to remove fish column, it is duplicated... o
 
 
 ```{r}
-# Test code from Anne-Marie and Hannah --------
+# -------Test code from Anne-Marie and Hannah on Thursday --------
 
 # generate mock test data
 # nsample = 500

@@ -62,12 +62,26 @@ catch_summary(catch)
 
 ```{r}
 # Output 2: total revenue for each location
+# Function location_revenue (see location_revenue.R)
+
+location_revenue(catch)
 
 ```
 
 
 ```{r}
 # Output 3: total fisheries revenue sum
+
+# Total revenue at each location 
+
+# price_df_1=as.data.frame(matrix(nrow=1, ncol=ncol(catch)))
+# for(i in 1:ncol(catch)){
+#   price_df_1[i]=sum(price_df[,i])
+# }
+
+# total_revenue=sum(price_df)
+
+
 ```
 
 

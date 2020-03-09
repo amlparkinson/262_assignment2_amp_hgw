@@ -37,7 +37,7 @@ catch_IV = sample(fish_species, size=100, prob = c(0.3, 0.17, 0.2, 0.23, 0.1), r
 catch = data.frame(catch_Naples, catch_Mohawk, catch_Carp, catch_IV) # values already recognized as a factor
 
 # Get the counts of each fish species for each location (instead of a list of 100)
-revenue = data.frame(matrix(nrow=nrow(prices), ncol=ncol(catch)))
+revenue = data.frame(matrix(nrow=nrow(fish_prices), ncol=ncol(catch)))
 
 for(i in 1:ncol(catch)) {
   revenue[i]=summary(catch[[i]])
@@ -73,7 +73,7 @@ dom_fish(catch$catch_Naples)
 
 # output 2: total revenue at each location
 location_revenue = function(fish){
-  fish_count = summary(catch$catch_Naples)
+  fish_count = summary(catch$catch_Naples) # stored as vector
   
   fish_count_df = as.data.frame(fish_count)
   fish_count_df <- rownames_to_column(fish_count_df, var="fish")
@@ -110,11 +110,39 @@ catch_summary = function (fish) {
   return(dom_df)
 }
 
-catch_summary(catch) #works!
+catch_summary(catch) #works! but 'fish' is in () by function, but I dont use fish in the functin. is that an issue?
 
 #test output
 which.max(summary(catch$catch_Naples))
 
+
+# output 2
+location_revenue = function(fish){
+  
+  #create data frame to store outputs
+  #location_revenue_df = data.frame(matrix(ncol = 3, nrow = ncol(catch)*ncol(fish_prices)))
+  location_revenue_df = data.frame(matrix(ncol = ncol(catch), nrow = nrow(fish_prices)))
+  location_revenue_df = setNames(dom_df, c("species", "num_caught", "location"))
+  
+  for (i in 1:ncol(catch)) {
+    location_revenue_df[[i, 2]] = summary(catch[[i]])
+    location_revenue_df[[i, 1]] = names(summary(catch[[i]]))
+  }
+ return(location_revenue_df) 
+
+}
+  
+catch_test <- catch %>% dplyr::select(catch_Carp)
+location_revenue(catch_test)
+
+fish_count = summary(catch$catch_Naples)
+  fish_count_df = as.data.frame(fish_count)
+  fish_count_df <- rownames_to_column(fish_count_df, var="fish")
+  fish_price_df = full_join(fish_count_df, fish_prices, by = "fish")
+  location_revenue_df = fish_price_df %>% 
+    mutate(species_revenue = (fish_count*price)) %>% 
+    summarise(location_revenue = sum(species_revenue))
+  return(location_revenue_df)
 
 
 ```

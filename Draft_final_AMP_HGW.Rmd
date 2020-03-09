@@ -63,21 +63,51 @@ catch_summary(catch)
 ```{r}
 # Output 2: total revenue for each location
 # Function location_revenue (see location_revenue.R)
+location_revenue = function(fish){
+  
+  #create data frame to store outputs
+  location_revenue_df = data.frame(matrix(ncol = ncol(catch), nrow = nrow(fish_prices)))
+  
+  # count number of fish
+  for(i in 1:ncol(catch)) {
+    location_revenue_df[i]=summary(catch[[i]])
+  }
+  
+  #add column names
+  colnames(location_revenue_df) = colnames(catch) 
+  
+  # add row for fish species and move this row to the front
+  names=names(summary(catch[[1]]))
+  location_revenue_df$fish = names
+  location_revenue_df <- location_revenue_df %>% 
+    dplyr::select(fish, everything())
+  
+  # add prices
+  fish_price_df = full_join(location_revenue_df, fish_prices, by = "fish")
+  
+  # new df to store location revenue
+  price_df = data.frame(matrix(ncol = ncol(catch), nrow = nrow(fish_prices)))
+  
+  # math
+  for (i in 2:ncol(location_revenue_df)) {
+    price_df[,i] = location_revenue_df[,i] * fish_price_df$price
+  }
+  
+  return(price_df)
+}
 
 location_revenue(catch)
 
+# Sum fish prices at each location (X1, X2, X3, X4, X5)
+price_df1=data.frame(matrix(nrow=1, ncol=ncol(catch)))
+for(i in 1:ncol(catch)){
+  price_df1[i]=sum(price_df[,i])
+} #trying to sum the prices for each column but not getting it to work...
 ```
 
 
 ```{r}
 # Output 3: total fisheries revenue sum
-
-# Total revenue at each location 
-
-# price_df_1=as.data.frame(matrix(nrow=1, ncol=ncol(catch)))
-# for(i in 1:ncol(catch)){
-#   price_df_1[i]=sum(price_df[,i])
-# }
 
 # total_revenue=sum(price_df)
 

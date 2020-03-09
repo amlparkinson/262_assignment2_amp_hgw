@@ -47,11 +47,11 @@ for(i in 1:ncol(catch)) {
 fish_names = names(summary(catch[[1]]))
 revenue$fish_names=fish_names 
 
-# Did the below to remove the duplicated fish column in the revenue dataframe. Not sure if this is the best way..?
+# Did the below to remove the duplicated fish column in the revenue dataframe.
 keeps <- c("X1", "X2", "X3", "X4", "fish_names")
 revenue[keeps]
 
-view(revenue) # hmm.. doesn't look like it did. LOL
+view(revenue)
 
 # Need to figure out how to now add the total revenue to the revenue dataframe?
 
@@ -62,14 +62,21 @@ view(revenue) # hmm.. doesn't look like it did. LOL
 ## test functions on just one column
 ```{r}
 
-# output 1: most common fish caught at location
+# output 1: most frequently caught fish at each location
 dom_fish = function(fish){
   max_species = which.max(summary(fish))
   dom = names(summary(fish) [max_species])
   return(dom)
 }
 
-dom_fish(catch$catch_Naples)
+dom_fish(catch$catch_Naples) # yay it works! - good job Anne-Marie :)
+  # Most caught fish at Naples location = MahiMahi
+dom_fish(catch$catch_Mohawk)
+  # Most caught fish at Mohawk location = Tuna
+dom_fish(catch$catch_Carp)
+  # Most caught fish at Carpinteria location = Tuna
+dom_fish(catch$catch_IV)
+  # Most caught fish at Isla Vista (IV) location = Tuna
 
 # output 2: total revenue at each location
 location_revenue = function(fish){
@@ -84,10 +91,11 @@ location_revenue = function(fish){
   return(location_revenue_df)
 }
   
-location_revenue(catch$catch_Naples)
-
+location_revenue(catch$catch_Naples) # This is returning the same revenue for each location.
   
-
+# location_revenue(catch$catch_Mohawk) 
+# 
+# location_revenue(catch$catch_Carp)  
 
 
 ```
@@ -110,7 +118,7 @@ catch_summary = function (fish) {
   return(dom_df)
 }
 
-catch_summary(catch) #works! but 'fish' is in () by function, but I dont use fish in the functin. is that an issue?
+catch_summary(catch) #works! but 'fish' is in () by function, but I dont use fish in the functin. is that an issue? # I would hope not...(HGW)
 
 #test output
 which.max(summary(catch$catch_Naples))
@@ -128,12 +136,12 @@ location_revenue = function(fish){
     location_revenue_df[[i, 2]] = summary(catch[[i]])
     location_revenue_df[[i, 1]] = names(summary(catch[[i]]))
   }
- return(location_revenue_df) 
+ return(location_revenue_df)
 
 }
   
 catch_test <- catch %>% dplyr::select(catch_Carp)
-location_revenue(catch_test)
+location_revenue(catch_test) # not sure if this is working for me?
 
 fish_count = summary(catch$catch_Naples)
   fish_count_df = as.data.frame(fish_count)
@@ -142,7 +150,7 @@ fish_count = summary(catch$catch_Naples)
   location_revenue_df = fish_price_df %>% 
     mutate(species_revenue = (fish_count*price)) %>% 
     summarise(location_revenue = sum(species_revenue))
-  return(location_revenue_df)
+  return(location_revenue_df) #same with this line of code, getting an error message. 
 
 
 ```

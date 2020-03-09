@@ -1,0 +1,140 @@
+---
+title: "new_script"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+# Hannah's code --------
+# upload packages
+library(tidyverse)
+library(tibble)
+
+# generate vectors of fish species: tuna, mahimahi, shark, salmon, flounder. 
+fish_species = c("tuna", "mahimahi", "shark", "salmon", 'flounder')
+
+# generate vectors of catch locations: Naples, Mohawk, Carpinteria, Isla Vista.
+catch_locations = c("Naples", "Mohawk", "Carp", "IV")
+
+# generate vectors of fish prices
+set_price = runif(min=7, max=15, n=length(fish_species))
+
+# Create a table of prices for fish
+fish_prices = data.frame(fish = fish_species, price = set_price) %>%
+  arrange(fish)
+
+# Create catch data for locations
+catch_Naples = sample(fish_species, size = 100, prob = c(0.1, 0.4, 0.2, 0.15, 0.15), replace = T)
+catch_Mohawk = sample(fish_species, size = 100, prob = c(0.3, 0.2, 0.15, 0.2, 0.15), replace = T)
+catch_Carp = sample(fish_species, size=100, prob = c(0.4, 0.12, 0.18, 0.1, 0.2), replace = T)
+catch_IV = sample(fish_species, size=100, prob = c(0.3, 0.17, 0.2, 0.23, 0.1), replace = T)
+
+# create data-frame of fish caught at each location
+catch = data.frame(catch_Naples, catch_Mohawk, catch_Carp, catch_IV) # values already recognized as a factor
+
+# Get the counts of each fish species for each location (instead of a list of 100)
+revenue = data.frame(matrix(nrow=nrow(prices), ncol=ncol(catch)))
+
+for(i in 1:ncol(catch)) {
+  revenue[i]=summary(catch[[i]])
+}
+
+# Add fish names to revenue dataframe
+fish_names = names(summary(catch[[1]]))
+revenue$fish_names=fish_names 
+
+# Did the below to remove the duplicated fish column in the revenue dataframe. Not sure if this is the best way..?
+keeps <- c("X1", "X2", "X3", "X4", "fish_names")
+revenue[keeps]
+
+view(revenue) # hmm.. doesn't look like it did. LOL
+
+# Need to figure out how to now add the total revenue to the revenue dataframe?
+
+
+```
+
+
+## test functions on just one column
+```{r}
+
+# output 1: most common fish caught at location
+dom_fish = function(fish){
+  max_species = which.max(summary(fish))
+  dom = names(summary(fish) [max_species])
+  return(dom)
+}
+
+dom_fish(catch$catch_Naples)
+
+# output 2: total revenue at each location
+location_revenue = function(fish){
+  fish_count = summary(catch$catch_Naples)
+  
+  fish_count_df = as.data.frame(fish_count)
+  fish_count_df <- rownames_to_column(fish_count_df, var="fish")
+  fish_price_df = full_join(fish_count_df, fish_prices, by = "fish")
+  location_revenue_df = fish_price_df %>% 
+    mutate(species_revenue = (fish_count*price)) %>% 
+    summarise(location_revenue = sum(species_revenue))
+  return(location_revenue_df)
+}
+  
+location_revenue(catch$catch_Naples)
+
+  
+
+
+
+```
+
+
+```{r}
+
+catch_summary = function (fish) {
+  
+  #create data frame to store outputs
+  dom_df = data.frame(matrix(ncol = 2, nrow = ncol(catch)))
+  dom_df = setNames(dom_df, c("most_frequent_fish", "location"))
+  
+  # determine most frequent fish caught in each location
+  for (i in 1:ncol(catch)) {
+    #dom_df[[i, 1]] = which.max(summary(catch[[i]]))  # dont need this bc it reports the number of occurances of the most frequent fish and we just want the name
+    dom_df[[i, 1]] = names(which.max(summary(catch[[i]])))
+    dom_df[[i, 2]] = colnames(catch)[i]
+  }
+  return(dom_df)
+}
+
+catch_summary(catch) #works!
+
+#test output
+which.max(summary(catch$catch_Naples))
+
+
+
+```
+
+
+```{r}
+# -------Test code from Anne-Marie and Hannah on Thursday --------
+
+# generate mock test data
+# nsample = 500
+
+# catch_Naples = sample(fish_species, size = 100, prob = c(0.1, 0.4, 0.2, 0.15, 0.15), replace = T)
+# catch_Mohawk = sample(fish_species, size = 100, prob = c(0.3, 0.2, 0.15, 0.2, 0.15), replace = T)
+# 
+# mock_data = data.frame(Naples=catch_Naples, Mohawk=catch_Mohawk) 
+# 
+# for (i in 1:mock_data) {
+#   Naples = as.factor(Naples)
+#   Mohawk = as.factor(Mohawk)
+# }
+
+```
+

@@ -141,7 +141,10 @@ total_fisheries_df
 # }
 
 final_revenue_total_df_2 <- final_revenue_total_df[-c(1),]
-final_revenue_total_df_2 # UGHH i don't know why the names are dropping from the data frame and how I'm supposed to plot this. 
+names(final_revenue_total_df_2) <- c("Naples", "Mohawk", "Carp", "IV")
+final_revenue_total_df_2 <- as.data.frame(final_revenue_total_df_2)
+
+# Still no idea. This is way too complicated. 
 
 revenue_graph <- ggplot(data=final_revenue_total_df_2, aes(y=V1)) +
   geom_col()

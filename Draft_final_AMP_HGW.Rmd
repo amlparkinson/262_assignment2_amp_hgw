@@ -102,7 +102,7 @@ final_revenue_total <- colSums(location_revenue(catch(2:5)))
 
 final_revenue_total_df <- as.data.frame(final_revenue_total)
 
-final_revenue_total_df
+final_revenue_total_df 
 
 # FINAL: Sum of fish prices at each location
   # Naples: $1,004.07
@@ -129,16 +129,23 @@ total_fisheries_df
 ```{r}
 # Graph of revenue by location (as text)
 
-# if(graph == TRUE) {
-#   total_fisheries_df_longer=pivot_longer(data=final_revenue_total_df, cols=X2:V5, names_to = "catch_locations", values_to = "revenue")
-#   
-#   revenue_graph=ggplot(data=total_fisheries_df_longer, aes(x=catch_locations, y=revenue)) +
+# if(graph == TRUE) 
+# {
+#   total_fisheries_df_graph=(data=final_revenue_total_df, rows = (V2:V:5), names_to = "catch_locations", values_to = "location_revenue_df")
+# 
+#   revenue_graph=ggplot(data=total_fisheries_df_graph, aes(x=catch_locations, y=revenue)) +
 #     geom_col()
-# }
 # 
 # return(list(frequency, final_revenue_total_df, total_revenue, revenue_graph))
+# 
 # }
 
+final_revenue_total_df_2 <- final_revenue_total_df[-c(1),]
+final_revenue_total_df_2 # UGHH i don't know why the names are dropping from the data frame and how I'm supposed to plot this. 
 
+revenue_graph <- ggplot(data=final_revenue_total_df_2, aes(y=V1)) +
+  geom_col()
+
+revenue_graph
 ```
 

@@ -98,24 +98,47 @@ location_revenue = function(fish){
 
 location_revenue(catch)
 
-# Sum fish prices at each location (X1, X2, X3, X4, X5)
-price_df1=data.frame(matrix(nrow=1, ncol=ncol(catch)))
-for(i in 1:ncol(catch)){
-  price_df1[i]=sum(price_df[,i])
-} #trying to sum the prices for each column but not getting it to work...
+final_revenue_total <- colSums(location_revenue(catch(2:5)))
+
+final_revenue_total_df <- as.data.frame(final_revenue_total)
+
+final_revenue_total_df
+
+# FINAL: Sum of fish prices at each location
+  # Naples: $1,004.07
+  # Mohawk: $894.87
+  # Carpinteria (Carp): $902.19
+  # Isla Vista (IV): $886.73
+
 ```
 
 
 ```{r}
 # Output 3: total fisheries revenue sum
 
-# total_revenue=sum(price_df)
+total_fisheries <- colSums(final_revenue_total_df, na.rm=TRUE)
 
+total_fisheries_df <- as.data.frame(total_fisheries)
 
+total_fisheries_df
+
+# FINAL: total revenue from all locations = $3,687.85
 ```
 
 
 ```{r}
 # Graph of revenue by location (as text)
+
+# if(graph == TRUE) {
+#   total_fisheries_df_longer=pivot_longer(data=final_revenue_total_df, cols=X2:V5, names_to = "catch_locations", values_to = "revenue")
+#   
+#   revenue_graph=ggplot(data=total_fisheries_df_longer, aes(x=catch_locations, y=revenue)) +
+#     geom_col()
+# }
+# 
+# return(list(frequency, final_revenue_total_df, total_revenue, revenue_graph))
+# }
+
+
 ```
 

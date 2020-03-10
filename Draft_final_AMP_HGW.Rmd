@@ -10,8 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+
+#load packages ---------------------------------------------------
 library(tidyverse)
 library(tibble)
+
+
+# create test data -------------------------------------------------------------
 
 # generate vectors of fish species: tuna, mahimahi, shark, salmon, flounder. 
 fish_species = c("tuna", "mahimahi", "shark", "salmon", 'flounder')
@@ -35,16 +40,7 @@ catch_IV = sample(fish_species, size=100, prob = c(0.3, 0.17, 0.2, 0.23, 0.1), r
 # create data-frame of fish caught at each location
 catch = data.frame(catch_Naples, catch_Mohawk, catch_Carp, catch_IV) # values already recognized as a factor
 
-# Get the counts of each fish species for each location (instead of a list of 100)
-revenue = data.frame(matrix(nrow=nrow(fish_prices), ncol=ncol(catch)))
-
-for(i in 1:ncol(catch)) {
-  revenue[i]=summary(catch[[i]])
-}
-
-# Add fish names to revenue dataframe
-fish_names = names(summary(catch[[1]]))
-revenue$fish_names=fish_names 
+ 
 ```
 
 ```{r}
@@ -104,11 +100,7 @@ final_revenue_total_df <- as.data.frame(final_revenue_total)
 
 final_revenue_total_df 
 
-# FINAL: Sum of fish prices at each location
-  # Naples: $1,004.07
-  # Mohawk: $894.87
-  # Carpinteria (Carp): $902.19
-  # Isla Vista (IV): $886.73
+
 
 ```
 
@@ -127,7 +119,7 @@ total_fisheries_df
 
 
 ```{r}
-# Graph of revenue by location (as text)
+# Graph of revenue by location (as text, whatever that means)
 
 # if(graph == TRUE) 
 # {

@@ -32,6 +32,6 @@ location_revenue = function(fish){
   
   return(price_df)
 }
-#count by price col; 2:ncol(catch); 
+
 
 
